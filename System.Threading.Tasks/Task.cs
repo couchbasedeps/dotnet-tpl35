@@ -28,8 +28,6 @@
 //
 //
 
-#if NET_4_0
-
 using System;
 using System.Threading;
 using System.Collections.Concurrent;
@@ -75,8 +73,6 @@ namespace System.Threading.Tasks
 
 		CancellationToken token;
 		CancellationTokenRegistration? cancellationRegistration;
-
-		//ExecutionContext ec;
 
 		internal const TaskCreationOptions WorkerTaskNotSupportedOptions = TaskCreationOptions.LongRunning | TaskCreationOptions.PreferFairness;
 
@@ -160,8 +156,6 @@ namespace System.Threading.Tasks
 
 			if (token.CanBeCanceled && !ignoreCancellation)
 				cancellationRegistration = token.Register (l => ((Task) l).CancelReal (), this);
-
-			//ec = ExecutionContext.Capture (false, true);
 		}
 
 		static bool HasFlag (TaskCreationOptions opt, TaskCreationOptions member)
@@ -432,10 +426,7 @@ namespace System.Threading.Tasks
 				status = TaskStatus.Running;
 				
 				try {
-					//if (ec != null)
-					//	ExecutionContext.Run (ec, l => ((Task) l).InnerInvoke (), this);
-					//else
-						InnerInvoke ();
+				    InnerInvoke ();
 				} catch (OperationCanceledException_ oce) {
 					if (token != CancellationToken.None && oce.CancellationToken == token)
 						CancelReal ();
@@ -1417,4 +1408,3 @@ namespace System.Threading.Tasks
 		#endregion
 	}
 }
-#endif

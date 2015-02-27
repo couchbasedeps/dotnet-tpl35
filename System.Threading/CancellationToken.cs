@@ -26,8 +26,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#if NET_4_0
-
 using System;
 using System.Threading;
 using System.Diagnostics;
@@ -139,4 +137,3 @@ namespace System.Threading
 		}
 	}
 }
-#endif

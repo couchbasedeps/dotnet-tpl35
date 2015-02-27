@@ -22,19 +22,8 @@
 //
 //
 
-using System;
-
-#if INSIDE_MONO_PARALLEL
-using System.Threading;
-
-namespace Mono.Threading
-#else
 namespace System.Threading
-#endif
 {
-#if INSIDE_MONO_PARALLEL
-	public
-#endif
 	struct AtomicBooleanValue
 	{
 		int flag;
@@ -107,10 +96,7 @@ namespace System.Threading
 			return AtomicBooleanValue.FromValue (rhs);
 		}
 	}
-
-#if INSIDE_MONO_PARALLEL
-	public
-#endif
+        
 	class AtomicBoolean
 	{
 		int flag;

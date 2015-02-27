@@ -26,8 +26,6 @@
 //
 //
 
-#if NET_4_0
-
 namespace System.Threading
 {
 	[System.Diagnostics.DebuggerDisplayAttribute ("Set = {IsSet}")]
@@ -268,4 +266,3 @@ namespace System.Threading
 		}
 	}
 }
-#endif

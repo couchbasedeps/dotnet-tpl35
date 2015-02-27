@@ -24,8 +24,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#if NET_4_0
-
 using System;
 using System.Collections.Generic;
 
@@ -46,7 +44,7 @@ namespace System.Collections.Concurrent
 		
 		public static OrderablePartitioner<TSource> Create<TSource> (TSource[] array, bool loadBalance)
 		{
-			return Create ((IList<TSource>)array, loadBalance);
+			return Create (array, loadBalance);
 		}
 		
 		public static OrderablePartitioner<TSource> Create<TSource> (IList<TSource> list, bool loadBalance)
@@ -98,15 +96,6 @@ namespace System.Collections.Concurrent
 
 			return new UserLongRangePartitioner (fromInclusive, toExclusive, rangeSize);
 		}
-		
-#if false
-		//[MonoTODO]
-		public static OrderablePartitioner<TSource> Create<TSource> (IEnumerable<TSource> source,
-									     EnumerablePartitionerOptions partitionerOptions)
-		{
-			throw new NotImplementedException ();
-		}
-#endif
 	}
 	
 	public abstract class Partitioner<TSource>
@@ -133,4 +122,3 @@ namespace System.Collections.Concurrent
 		}
 	}
 }
-#endif

@@ -37,10 +37,9 @@ namespace System
 	[ComVisible (true)]
     public class OperationCanceledException_ : OperationCanceledException
 	{
+
 		const int Result = unchecked ((int)0x8013153b);
-#if NET_4_0
-		CancellationToken? token;
-#endif
+		readonly CancellationToken? token;
 
 		// Constructors
 		public OperationCanceledException_ ()
@@ -63,7 +62,6 @@ namespace System
 		{
 		}
 		
-#if NET_4_0
 		public OperationCanceledException_ (CancellationToken token)
 			: this ()
 		{
@@ -89,6 +87,6 @@ namespace System
 				return token.Value;
 			}
 		}
-#endif
+
 	}
 }

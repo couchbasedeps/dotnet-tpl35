@@ -27,8 +27,6 @@
 //
 //
 
-#if NET_4_0
-
 namespace System.Threading.Tasks
 {
 	[FlagsAttribute, SerializableAttribute]
@@ -44,4 +42,3 @@ namespace System.Threading.Tasks
 #endif
 	}
 }
-#endif

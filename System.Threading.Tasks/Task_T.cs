@@ -27,8 +27,6 @@
 //
 //
 
-#if NET_4_0
-
 using System.Runtime.CompilerServices;
 
 namespace System.Threading.Tasks
@@ -338,4 +336,3 @@ namespace System.Threading.Tasks
 #endif
 	}
 }
-#endif

@@ -22,7 +22,6 @@
 //
 //
 
-#if NET_4_0
 using System;
 using System.Runtime.Serialization;
 
@@ -31,7 +30,7 @@ namespace System.Threading.Tasks
 	[Serializable]
 	public class TaskCanceledException : OperationCanceledException_
 	{
-		Task task;
+		readonly Task task;
 		
 		public TaskCanceledException (): base ()
 		{
@@ -63,4 +62,3 @@ namespace System.Threading.Tasks
 		}
 	}
 }
-#endif

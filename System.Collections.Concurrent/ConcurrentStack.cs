@@ -26,13 +26,10 @@
 //
 //
 
-#if NET_4_0
-
 using System;
 using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 
 namespace System.Collections.Concurrent
 {
@@ -279,5 +276,3 @@ namespace System.Collections.Concurrent
 		}
 	}
 }
-#endif
-

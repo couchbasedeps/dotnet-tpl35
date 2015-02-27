@@ -28,8 +28,6 @@
 //
 //
 
-#if NET_4_0
-
 using System;
 using System.Collections.Concurrent;
 
@@ -63,5 +61,3 @@ namespace System.Threading.Tasks
 		}
 	}
 }
-
-#endif

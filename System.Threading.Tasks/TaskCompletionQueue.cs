@@ -26,11 +26,7 @@
 //
 //
 
-#if NET_4_0
-
-using System;
 using System.Threading;
-using System.Collections.Generic;
 using System.Collections.Concurrent;
 
 namespace System.Threading.Tasks
@@ -76,5 +72,3 @@ namespace System.Threading.Tasks
 		}
 	}
 }
-
-#endif

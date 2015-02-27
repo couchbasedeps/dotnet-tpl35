@@ -26,8 +26,6 @@
 //
 //
 
-#if NET_4_0
-
 namespace System.Threading.Tasks
 {
 	static class TaskConstants
@@ -47,5 +45,3 @@ namespace System.Threading.Tasks
 		}
 	}
 }
-
-#endif

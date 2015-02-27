@@ -24,21 +24,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#if NET_4_0
-
-using System;
 using System.Collections.Generic;
-using System.Threading;
 
-#if INSIDE_MONO_PARALLEL
-namespace Mono.Threading.Tasks
-#else
 namespace System.Threading.Tasks
-#endif
 {
-#if INSIDE_MONO_PARALLEL
-	public
-#endif
 	interface IConcurrentDeque<T>
 	{
 		void PushBottom (T obj);
@@ -47,5 +36,3 @@ namespace System.Threading.Tasks
 		IEnumerable<T> GetEnumerable ();
 	}
 }
-
-#endif

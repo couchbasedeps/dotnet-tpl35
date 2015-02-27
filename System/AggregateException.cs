@@ -27,7 +27,6 @@
 //
 //
 
-#if NET_4_0
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
@@ -178,4 +177,3 @@ namespace System
 		}
 	}
 }
-#endif

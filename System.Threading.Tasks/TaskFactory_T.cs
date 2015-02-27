@@ -26,8 +26,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#if NET_4_0
-
 namespace System.Threading.Tasks
 {
 	public class TaskFactory<TResult>
@@ -479,4 +477,3 @@ namespace System.Threading.Tasks
 		}
 	}
 }
-#endif

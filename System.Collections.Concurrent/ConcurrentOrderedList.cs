@@ -22,25 +22,13 @@
 //
 //
 
-#if NET_4_0
-
 using System;
 using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 
-#if INSIDE_MONO_PARALLEL
-using System.Collections.Concurrent;
-
-namespace Mono.Collections.Concurrent
-#else
 namespace System.Collections.Concurrent
-#endif
 {
-#if INSIDE_MONO_PARALLEL
-	public
-#endif
 	class ConcurrentOrderedList<T>: ICollection<T>, IEnumerable<T>
 	{
 		class Node
@@ -336,5 +324,3 @@ namespace System.Collections.Concurrent
 		}
 	}
 }
-
-#endif

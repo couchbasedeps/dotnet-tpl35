@@ -24,21 +24,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#if NET_4_0
-
 using System;
 using System.Collections.Generic;
 using System.Threading;
 
-#if INSIDE_MONO_PARALLEL
-namespace Mono.Threading.Tasks
-#else
 namespace System.Threading.Tasks
-#endif
 {
-#if INSIDE_MONO_PARALLEL
-	public
-#endif
 	class CyclicDeque<T> : IConcurrentDeque<T>
 	{
 		const int BaseSize = 11;
@@ -216,4 +207,3 @@ namespace System.Threading.Tasks
 		}
 	}
 }
-#endif

@@ -26,8 +26,6 @@
 //
 //
 
-#if NET_4_0
-
 namespace System.Threading
 {
 	[System.Diagnostics.DebuggerDisplayAttribute ("Initial Count={InitialCount}, Current Count={CurrentCount}")]
@@ -208,4 +206,3 @@ namespace System.Threading
 		}
 	}
 }
-#endif
