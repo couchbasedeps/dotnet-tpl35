@@ -33,8 +33,16 @@ namespace System.Threading.Tasks
 {
 	internal struct TaskCompletionQueue<TCompletion> where TCompletion : class
 	{
-		TCompletion single;
-		ConcurrentOrderedList<TCompletion> completed;
+        object single; //TCompletion
+        TCompletion Single
+        {
+            get { return (TCompletion)single; }
+        }
+        object completed; //ConcurrentOrderedList<TCompletion>
+        ConcurrentOrderedList<TCompletion> Completed
+        {
+            get { return (ConcurrentOrderedList<TCompletion>)completed; }
+        }
 
 		public void Add (TCompletion continuation)
 		{
@@ -42,22 +50,22 @@ namespace System.Threading.Tasks
 				return;
 			if (completed == null)
 				Interlocked.CompareExchange (ref completed, new ConcurrentOrderedList<TCompletion> (), null);
-			completed.TryAdd (continuation);
+            Completed.TryAdd (continuation);
 		}
 
 		public bool Remove (TCompletion continuation)
 		{
-			TCompletion temp = single;
+            TCompletion temp = Single;
 			if (temp != null && temp == continuation && Interlocked.CompareExchange (ref single, null, continuation) == continuation)
 				return true;
 			if (completed != null)
-				return completed.TryRemove (continuation);
+                return Completed.TryRemove (continuation);
 			return false;
 		}
 
 		public bool HasElements {
 			get {
-				return single != null || (completed != null && completed.Count != 0);
+                return single != null || (completed != null && Completed.Count != 0);
 			}
 		}
 
@@ -65,10 +73,10 @@ namespace System.Threading.Tasks
 		{
 			continuation = null;
 
-			if (single != null && (continuation = Interlocked.Exchange (ref single, null)) != null)
+            if (single != null && (continuation = (TCompletion)Interlocked.Exchange (ref single, null)) != null)
 				return true;
 
-			return completed != null && completed.TryPop (out continuation);
+            return completed != null && Completed.TryPop (out continuation);
 		}
 	}
 }

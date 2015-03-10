@@ -33,7 +33,12 @@ namespace System.Threading
 	{
 		readonly int spinCount;
 
-		ManualResetEvent handle;
+		object handle;
+        ManualResetEvent Handle
+        {
+            get { return (ManualResetEvent)handle; }
+        }
+
 		internal AtomicBooleanValue disposed;
 		int used;
 		int state;
@@ -98,7 +103,7 @@ namespace System.Threading
 		void CommitChangeToHandle (long stamp)
 		{
 			Interlocked.Increment (ref used);
-			var tmpHandle = handle;
+			var tmpHandle = Handle;
 			if (tmpHandle != null) {
 				// First in all case we carry the operation we were called for
  				if ((stamp & 1) == 1)
@@ -202,7 +207,7 @@ namespace System.Threading
 				ThrowIfDisposed ();
 
 				if (handle != null)
-					return handle;
+					return Handle;
 
 				var isSet = IsSet;
 				var mre = new ManualResetEvent (IsSet);
@@ -224,7 +229,7 @@ namespace System.Threading
                     ((IDisposable)mre).Dispose ();
 				}
 
-				return handle;
+				return Handle;
 			}
 		}
 

@@ -37,7 +37,11 @@ namespace System.Threading.Tasks
 	{
 		public volatile AggregateException  Exception;
 		public volatile bool                Observed;
-		public ConcurrentQueue<AggregateException> ChildExceptions;
+        public object childExceptions; //ConcurrentQueue<AggregateException>
+        public ConcurrentQueue<AggregateException> ChildExceptions
+        {
+            get { return (ConcurrentQueue<AggregateException>)childExceptions; }
+        }
 
 		Task parent;
 

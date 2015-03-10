@@ -38,11 +38,23 @@ namespace System.Collections.Concurrent
 		class Node
 		{
 			public T Value;
-			public Node Next;
+            public Node Next
+            {
+                get { return (Node)next; }
+            }
+            public object next;
 		}
 		
-		Node head = new Node ();
-		Node tail;
+		object head = new Node ();
+        Node Head {
+            get { return (Node)head; }
+        }
+
+		object tail;
+        Node Tail {
+            get { return (Node)tail; }
+        }
+
 		int count;
 
 		public ConcurrentQueue ()
@@ -66,14 +78,14 @@ namespace System.Collections.Concurrent
 			
 			bool update = false;
 			while (!update) {
-				oldTail = tail;
+				oldTail = Tail;
 				oldNext = oldTail.Next;
 				
 				// Did tail was already updated ?
 				if (tail == oldTail) {
 					if (oldNext == null) {
 						// The place is for us
-						update = Interlocked.CompareExchange (ref tail.Next, node, null) == null;
+                        update = Interlocked.CompareExchange (ref Tail.next, node, null) == null;
 					} else {
 						// another Thread already used the place so give him a hand by putting tail where it should be
 						Interlocked.CompareExchange (ref tail, oldNext, oldTail);
@@ -98,8 +110,8 @@ namespace System.Collections.Concurrent
 			bool advanced = false;
 
 			while (!advanced) {
-				Node oldHead = head;
-				Node oldTail = tail;
+                Node oldHead = Head;
+				Node oldTail = Tail;
 				oldNext = oldHead.Next;
 				
 				if (oldHead == head) {
@@ -134,7 +146,7 @@ namespace System.Collections.Concurrent
 			
 			while (update)
 			{
-				Node oldHead = head;
+				Node oldHead = Head;
 				Node oldNext = oldHead.Next;
 
 				if (oldNext == null) {
@@ -168,7 +180,7 @@ namespace System.Collections.Concurrent
 		
 		IEnumerator<T> InternalGetEnumerator ()
 		{
-			Node my_head = head;
+			Node my_head = Head;
 			while ((my_head = my_head.Next) != null) {
 				yield return my_head.Value;
 			}

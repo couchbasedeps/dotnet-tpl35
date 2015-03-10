@@ -45,7 +45,11 @@ namespace System.Collections.Concurrent
 			public Node Next;
 		}
 		
-		Node head;
+		object head;
+        Node Head
+        {
+            get { return (Node)head; }
+        }
 		
 		int count;
 		
@@ -73,7 +77,7 @@ namespace System.Collections.Concurrent
 			Node temp = new Node ();
 			temp.Value = item;
 			do {
-			  temp.Next = head;
+			  temp.Next = Head;
 			} while (Interlocked.CompareExchange (ref head, temp, temp.Next) != temp.Next);
 			
 			Interlocked.Increment (ref count);
@@ -105,7 +109,7 @@ namespace System.Collections.Concurrent
 			}
 			
 			do {
-				first.Next = head;
+				first.Next = Head;
 			} while (Interlocked.CompareExchange (ref head, insert, first.Next) != first.Next);
 			
 			Interlocked.Add (ref this.count, count);
@@ -115,7 +119,7 @@ namespace System.Collections.Concurrent
 		{
 			Node temp;
 			do {
-				temp = head;
+				temp = Head;
 				// The stak is empty
 				if (temp == null) {
 					result = default (T);
@@ -145,7 +149,7 @@ namespace System.Collections.Concurrent
 			Node end;
 			
 			do {
-				temp = head;
+				temp = Head;
 				if (temp == null)
 					return 0;
 				end = temp;
@@ -169,7 +173,7 @@ namespace System.Collections.Concurrent
 		
 		public bool TryPeek (out T result)
 		{
-			Node myHead = head;
+			Node myHead = Head;
 			if (myHead == null) {
 				result = default (T);
 				return false;
@@ -197,7 +201,7 @@ namespace System.Collections.Concurrent
 
 		IEnumerator<T> InternalGetEnumerator ()
 		{
-			Node my_head = head;
+			Node my_head = Head;
 			if (my_head == null) {
 				yield break;
 			} else {

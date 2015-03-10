@@ -53,15 +53,28 @@ namespace System.Threading.Tasks
 		static int          id = -1;
 		static readonly TaskFactory defaultFactory = new TaskFactory ();
 
-		CountdownEvent childTasks;
+		object childTasks; //CountdownEvent
+        CountdownEvent ChildTasks
+        {
+            get { return (CountdownEvent)childTasks; }
+        }
 		
 		int                 taskId;
 		TaskCreationOptions creationOptions;
 		
 		internal TaskScheduler       scheduler;
 
-		TaskExceptionSlot exSlot;
-		ManualResetEvent wait_handle;
+		object exSlot; //TaskExceptionSlot
+        TaskExceptionSlot ExSlot
+        {
+            get { return (TaskExceptionSlot)exSlot; }
+        }
+
+        object wait_handle; //ManualResetEvent
+        ManualResetEvent Wait_Handle
+        {
+            get { return (ManualResetEvent)wait_handle; }
+        }
 
 		TaskStatus          status;
 
@@ -486,7 +499,7 @@ namespace System.Threading.Tasks
 			}
 
 			if (observed)
-				exSlot.Observed = true;
+                ExSlot.Observed = true;
 
 			return true;
 		}
@@ -494,7 +507,7 @@ namespace System.Threading.Tasks
 		internal bool TrySetExceptionObserved ()
 		{
 			if (exSlot != null) {
-				exSlot.Observed = true;
+                ExSlot.Observed = true;
 				return true;
 			}
 			return false;
@@ -509,18 +522,19 @@ namespace System.Threading.Tasks
 		{
 			if (childTasks == null)
 				Interlocked.CompareExchange (ref childTasks, new CountdownEvent (1), null);
-			childTasks.AddCount ();
+
+            ChildTasks.AddCount ();
 		}
 
 		internal void ChildCompleted (AggregateException childEx)
 		{
 			if (childEx != null) {
 				if (ExceptionSlot.ChildExceptions == null)
-					Interlocked.CompareExchange (ref ExceptionSlot.ChildExceptions, new ConcurrentQueue<AggregateException> (), null);
+                    Interlocked.CompareExchange (ref ExceptionSlot.childExceptions, new ConcurrentQueue<AggregateException> (), null);
 				ExceptionSlot.ChildExceptions.Enqueue (childEx);
 			}
 
-			if (childTasks.Signal () && status == TaskStatus.WaitingForChildrenToComplete) {
+            if (ChildTasks.Signal () && status == TaskStatus.WaitingForChildrenToComplete) {
 				ProcessChildExceptions ();
 				Status = exSlot == null ? TaskStatus.RanToCompletion : TaskStatus.Faulted;
 				ProcessCompleteDelegates ();
@@ -544,20 +558,20 @@ namespace System.Threading.Tasks
 		{
 			// If there was children created and they all finished, we set the countdown
 			if (childTasks != null) {
-				if (childTasks.Signal ())
+                if (ChildTasks.Signal ())
 					ProcessChildExceptions (true);
 			}
 			
 			// Don't override Canceled or Faulted
 			if (status == TaskStatus.Running) {
-				if (childTasks == null || childTasks.IsSet)
+                if (childTasks == null || ChildTasks.IsSet)
 					Status = TaskStatus.RanToCompletion;
 				else
 					Status = TaskStatus.WaitingForChildrenToComplete;
 			}
 
 			if (wait_handle != null)
-				wait_handle.Set ();
+                Wait_Handle.Set ();
 
 			// Tell parent that we are finished
 			if (parent != null && NotifyParentOnFinish ()) {
@@ -607,15 +621,15 @@ namespace System.Threading.Tasks
 
 		void ProcessChildExceptions (bool isParent = false)
 		{
-			if (exSlot == null || exSlot.ChildExceptions == null)
+            if (exSlot == null || ExSlot.ChildExceptions == null)
 				return;
 
 			if (ExceptionSlot.Exception == null)
-				exSlot.Exception = new AggregateException ();
+                ExSlot.Exception = new AggregateException ();
 
 			AggregateException childEx;
-			while (exSlot.ChildExceptions.TryDequeue (out childEx))
-				exSlot.Exception.AddChildException (childEx);
+            while (ExSlot.ChildExceptions.TryDequeue (out childEx))
+                ExSlot.Exception.AddChildException (childEx);
 
 			if (isParent) {
 				Status = TaskStatus.Faulted;
@@ -631,7 +645,7 @@ namespace System.Threading.Tasks
 			Status = TaskStatus.Canceled;
 
 			if (wait_handle != null)
-				wait_handle.Set ();
+                Wait_Handle.Set ();
 
 			ProcessCompleteDelegates ();
 
@@ -651,7 +665,7 @@ namespace System.Threading.Tasks
 			Status = TaskStatus.Faulted;
 
 			if (wait_handle != null)
-				wait_handle.Set ();
+                Wait_Handle.Set ();
 
 			ProcessCompleteDelegates ();
 		}
@@ -659,7 +673,7 @@ namespace System.Threading.Tasks
 		internal bool WaitOnChildren ()
 		{
 			if (Status == TaskStatus.WaitingForChildrenToComplete && childTasks != null) {
-				childTasks.Wait ();
+                ChildTasks.Wait ();
 				return true;
 			}
 			return false;
@@ -1302,8 +1316,8 @@ namespace System.Threading.Tasks
 			get {
 				if (exSlot == null || !IsFaulted)
 					return null;
-				exSlot.Observed = true;
-				return exSlot.Exception;
+                ExSlot.Observed = true;
+                return ExSlot.Exception;
 			}
 		}
 		
@@ -1344,9 +1358,9 @@ namespace System.Threading.Tasks
 		internal TaskExceptionSlot ExceptionSlot {
 			get {
 				if (exSlot != null)
-					return exSlot;
+                    return (TaskExceptionSlot)exSlot;
 				Interlocked.CompareExchange (ref exSlot, new TaskExceptionSlot (this), null);
-				return exSlot;
+                return (TaskExceptionSlot)exSlot;
 			}
 		}
 
@@ -1370,7 +1384,7 @@ namespace System.Threading.Tasks
 				if (wait_handle == null)
 					Interlocked.CompareExchange (ref wait_handle, new ManualResetEvent (IsCompleted), null);
 
-				return wait_handle;
+                return (ManualResetEvent)wait_handle;
 			}
 		}
 		

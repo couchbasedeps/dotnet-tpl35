@@ -28,6 +28,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Concurrent;
+using System.Collections.Generic.Couchbase;
 
 namespace System.Threading
 {
@@ -52,7 +53,11 @@ namespace System.Threading
 		
 #if NET_4_5
 		static readonly TimerCallback timer_callback;
-		Timer timer;
+		object timer;
+        Timer Timer
+        { 
+            get { return (Timer)timer; }
+        }
 #endif
 
 		static CancellationTokenSource ()
@@ -69,7 +74,7 @@ namespace System.Threading
 
 		public CancellationTokenSource ()
 		{
-			callbacks = new ConcurrentDictionary<CancellationTokenRegistration, Action> ();
+            callbacks = new ConcurrentDictionary<CancellationTokenRegistration, Action> (new GenericEqualityComparer<CancellationTokenRegistration>());
 			handle = new ManualResetEvent (false);
 		}
 
@@ -200,7 +205,7 @@ namespace System.Threading
 					t.Dispose ();
 			}
 
-			timer.Change (millisecondsDelay, Timeout.Infinite);
+			Timer.Change (millisecondsDelay, Timeout.Infinite);
 		}
 #endif
 
@@ -268,7 +273,7 @@ namespace System.Threading
 				}
 #if NET_4_5
 				if (timer != null)
-					timer.Dispose ();
+					Timer.Dispose ();
 #endif
 
                 ((IDisposable)handle).Dispose ();

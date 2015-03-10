@@ -94,6 +94,7 @@
     <Compile Include="System.Collections.Concurrent.Partitioners\EnumerablePartitioner.cs" />
     <Compile Include="System.Collections.Concurrent.Partitioners\ListPartitioner.cs" />
     <Compile Include="System.Collections.Concurrent.Partitioners\UserRangePartitioner.cs" />
+    <Compile Include="System.Collections.Generic\GenericEqualityComparer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="System.Collections.Concurrent\" />

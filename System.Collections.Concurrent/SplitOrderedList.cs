@@ -36,7 +36,10 @@ namespace System.Collections.Concurrent
 			public ulong Key;
 			public TKey SubKey;
 			public T Data;
-			public Node Next;
+            public object next;
+            public Node Next {
+                get { return (Node)next; }
+            }
 
 			public Node Init (ulong key, TKey subKey, T data)
 			{
@@ -45,7 +48,7 @@ namespace System.Collections.Concurrent
 				this.Data = data;
 
 				this.Marked = false;
-				this.Next = null;
+				this.next = null;
 
 				return this;
 			}
@@ -56,7 +59,7 @@ namespace System.Collections.Concurrent
 				this.Key = key;
 				this.Data = default (T);
 
-				this.Next = null;
+				this.next = null;
 				this.Marked = false;
 				this.SubKey = default (TKey);
 
@@ -67,7 +70,7 @@ namespace System.Collections.Concurrent
 			public Node Init (Node wrapped)
 			{
 				this.Marked = true;
-				this.Next = wrapped;
+				this.next = wrapped;
 
 				this.Key = 0;
 				this.Data = default (T);
@@ -83,7 +86,7 @@ namespace System.Collections.Concurrent
 		Node head;
 		Node tail;
 
-		Node[] buckets = new Node [BucketSize];
+		object[] buckets = new object [BucketSize];
 		int count;
 		int size = 2;
 
@@ -96,7 +99,7 @@ namespace System.Collections.Concurrent
 			this.comparer = comparer;
 			head = new Node ().Init (0);
 			tail = new Node ().Init (ulong.MaxValue);
-			head.Next = tail;
+			head.next = tail;
 			SetBucket (0, head);
 		}
 
@@ -280,7 +283,7 @@ namespace System.Collections.Concurrent
 		{
 			if (index >= buckets.Length)
 				return null;
-			return buckets[index];
+            return (Node)buckets[index];
 		}
 
 		Node SetBucket (uint index, Node node)
@@ -289,8 +292,8 @@ namespace System.Collections.Concurrent
 				slim.EnterReadLock ();
 				CheckSegment (index, true);
 
-				Interlocked.CompareExchange (ref buckets[index], node, null);
-				return buckets[index];
+                Interlocked.CompareExchange (ref buckets[index], node, null);
+                return (Node)buckets[index];
 			} finally {
 				slim.ExitReadLock ();
 			}
@@ -343,7 +346,7 @@ namespace System.Collections.Concurrent
 						return rightNode;
 				}
 				
-				if (Interlocked.CompareExchange (ref left.Next, rightNode, leftNodeNext) == leftNodeNext) {
+                if (Interlocked.CompareExchange (ref left.next, rightNode, leftNodeNext) == leftNodeNext) {
 					if (rightNode != tail && rightNode.Next.Marked)
 						continue;
 					else
@@ -371,12 +374,12 @@ namespace System.Collections.Concurrent
 						markedNode = new Node ();
 					markedNode.Init (rightNodeNext);
 
-					if (Interlocked.CompareExchange (ref rightNode.Next, markedNode, rightNodeNext) == rightNodeNext)
+                    if (Interlocked.CompareExchange (ref rightNode.next, markedNode, rightNodeNext) == rightNodeNext)
 						break;
 				}
 			} while (true);
 			
-			if (Interlocked.CompareExchange (ref leftNode.Next, rightNodeNext, rightNode) != rightNode)
+            if (Interlocked.CompareExchange (ref leftNode.next, rightNodeNext, rightNode) != rightNode)
 				ListSearch (rightNode.Key, subKey, ref leftNode, startPoint);
 			
 			return true;
@@ -392,10 +395,10 @@ namespace System.Collections.Concurrent
 				if (rightNode != tail && rightNode.Key == key && comparer.Equals (newNode.SubKey, rightNode.SubKey))
 					return false;
 				
-				newNode.Next = rightNode;
+				newNode.next = rightNode;
 				if (dataCreator != null)
 					newNode.Data = dataCreator ();
-				if (Interlocked.CompareExchange (ref leftNode.Next, newNode, rightNode) == rightNode)
+                if (Interlocked.CompareExchange (ref leftNode.next, newNode, rightNode) == rightNode)
 					return true;
 			} while (true);
 		}

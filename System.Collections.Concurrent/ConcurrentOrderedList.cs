@@ -35,7 +35,12 @@ namespace System.Collections.Concurrent
 		{
 			public T Data;
 			public int Key;
-			public Node Next;
+            public object next;
+            public Node Next
+            {
+                get { return (Node)next; }
+            }
+
 			public bool Marked;		   
 
 			public Node ()
@@ -46,7 +51,7 @@ namespace System.Collections.Concurrent
 			public Node (Node wrapped)
 			{
 				Marked = true;
-				Next = wrapped;
+				next = wrapped;
 			}
 		}
 
@@ -71,7 +76,7 @@ namespace System.Collections.Concurrent
 
 			head = new Node ();
 			tail = new Node ();
-			head.Next = tail;
+			head.next = tail;
 		}
 
 		public bool TryAdd (T data)
@@ -139,7 +144,7 @@ namespace System.Collections.Concurrent
 
 		public void Clear ()
 		{
-			head.Next = tail;
+			head.next = tail;
 		}
 
 		public void CopyTo (T[] array, int startIndex)
@@ -199,7 +204,7 @@ namespace System.Collections.Concurrent
 						return rightNode;
 				}
 				
-				if (Interlocked.CompareExchange (ref left.Next, rightNode, leftNodeNext) == leftNodeNext) {
+                if (Interlocked.CompareExchange (ref left.next, rightNode, leftNodeNext) == leftNodeNext) {
 					if (rightNode != tail && rightNode.Next.Marked)
 						continue;
 					else
@@ -222,11 +227,11 @@ namespace System.Collections.Concurrent
 				
 				rightNodeNext = rightNode.Next;
 				if (!rightNodeNext.Marked)
-					if (Interlocked.CompareExchange (ref rightNode.Next, new Node (rightNodeNext), rightNodeNext) == rightNodeNext)
+                if (Interlocked.CompareExchange (ref rightNode.next, new Node (rightNodeNext), rightNodeNext) == rightNodeNext)
 						break;
 			} while (true);
 			
-			if (Interlocked.CompareExchange (ref leftNode.Next, rightNodeNext, rightNode) != rightNodeNext)
+            if (Interlocked.CompareExchange (ref leftNode.next, rightNodeNext, rightNode) != rightNodeNext)
 				ListSearch (rightNode.Key, ref leftNode);
 			
 			return true;
@@ -246,11 +251,11 @@ namespace System.Collections.Concurrent
 
 				rightNodeNext = rightNode.Next;
 				if (!rightNodeNext.Marked)
-					if (Interlocked.CompareExchange (ref rightNode.Next, new Node (rightNodeNext), rightNodeNext) == rightNodeNext)
+                if (Interlocked.CompareExchange (ref rightNode.next, new Node (rightNodeNext), rightNodeNext) == rightNodeNext)
 						break;
 			} while (true);
 
-			if (Interlocked.CompareExchange (ref leftNode.Next, rightNodeNext, rightNode) != rightNodeNext)
+			if (Interlocked.CompareExchange (ref leftNode.next, rightNodeNext, rightNode) != rightNodeNext)
 				ListSearch (rightNode.Key, ref leftNode);
 
 			return true;
@@ -266,8 +271,8 @@ namespace System.Collections.Concurrent
 				if (rightNode != tail && rightNode.Key == key)
 					return false;
 				
-				newNode.Next = rightNode;
-				if (Interlocked.CompareExchange (ref leftNode.Next, newNode, rightNode) == rightNode)
+				newNode.next = rightNode;
+                if (Interlocked.CompareExchange (ref leftNode.next, newNode, rightNode) == rightNode)
 					return true;
 			} while (true);
 		}
