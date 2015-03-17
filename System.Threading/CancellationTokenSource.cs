@@ -44,7 +44,11 @@ namespace System.Threading
 		int state;
 		int currId = int.MinValue;
 		ConcurrentDictionary<CancellationTokenRegistration, Action> callbacks;
-		CancellationTokenRegistration[] linkedTokens;
+        CancellationTokenRegistration[] linkedTokens
+        {
+            get { return (CancellationTokenRegistration[])_linkedTokens; }
+        }
+        object _linkedTokens;
 
 		ManualResetEvent handle;
 		
@@ -230,7 +234,7 @@ namespace System.Threading
 				if (token.CanBeCanceled)
 					registrations.Add (token.Register (action));
 			}
-			src.linkedTokens = registrations.ToArray ();
+			src._linkedTokens = registrations.ToArray ();
 			
 			return src;
 		}
@@ -283,10 +287,10 @@ namespace System.Threading
 
 		void UnregisterLinkedTokens ()
 		{
-			var registrations = Interlocked.Exchange (ref linkedTokens, null);
+			var registrations = Interlocked.Exchange (ref _linkedTokens, null);
 			if (registrations == null)
 				return;
-			foreach (var linked in registrations)
+            foreach (var linked in (CancellationTokenRegistration[])registrations)
 				linked.Dispose ();
 		}
 		
