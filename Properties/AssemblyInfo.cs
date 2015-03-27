@@ -25,13 +25,10 @@ using System.Runtime.CompilerServices;
 // Change them to the values specific to your project.
 
 [assembly: AssemblyTitle("System.Threading.Tasks.Net35")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Couchbase, Inc")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("Couchbase, Inc")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+[assembly: AssemblyDescription("The Task Parallel Library ported back to .NET 3.5")]
+[assembly: AssemblyCompany ("Couchbase")]
+[assembly: AssemblyProduct("TPL .NET 3.5")]
+[assembly: AssemblyCopyright("2015")]
 
 // The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
 // The form "{Major}.{Minor}.*" will automatically update the build and revision,
@@ -39,10 +36,3 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyVersion("1.0.*")]
 [assembly: InternalsVisibleTo("Couchbase.Lite.Unity")]
-
-// The following attributes are used to specify the signing key for the assembly,
-// if desired. See the Mono documentation for more information about signing.
-
-//[assembly: AssemblyDelaySign(false)]
-//[assembly: AssemblyKeyFile("")]
-
