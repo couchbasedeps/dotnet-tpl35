@@ -31,50 +31,50 @@ using System.Runtime.Serialization;
 using System.Runtime.InteropServices;
 using System.Threading;
 
-namespace System
+namespace System.Couchbase
 {
 	[Serializable]
 	[ComVisible (true)]
-    public class OperationCanceledException_ : OperationCanceledException
+    public class OperationCanceledException : System.OperationCanceledException
 	{
 
 		const int Result = unchecked ((int)0x8013153b);
 		readonly CancellationToken? token;
 
 		// Constructors
-		public OperationCanceledException_ ()
+        public OperationCanceledException ()
 			: base ("The operation was canceled.")
 		{
 		}
 
-		public OperationCanceledException_ (string message)
+        public OperationCanceledException (string message)
 			: base (message)
 		{
 		}
 
-		public OperationCanceledException_ (string message, Exception innerException)
+        public OperationCanceledException (string message, Exception innerException)
 			: base (message, innerException)
 		{
 		}
 
-		protected OperationCanceledException_ (SerializationInfo info, StreamingContext context)
+        protected OperationCanceledException (SerializationInfo info, StreamingContext context)
 			: base (info, context)
 		{
 		}
 		
-		public OperationCanceledException_ (CancellationToken token)
+        public OperationCanceledException (CancellationToken token)
 			: this ()
 		{
 			this.token = token;
 		}
 		
-		public OperationCanceledException_ (string message, CancellationToken token)
+        public OperationCanceledException (string message, CancellationToken token)
 			: this (message)
 		{
 			this.token = token;
 		}
 		
-		public OperationCanceledException_ (string message, Exception innerException, CancellationToken token)
+        public OperationCanceledException (string message, Exception innerException, CancellationToken token)
 			: base (message, innerException)
 		{
 			this.token = token;

@@ -28,7 +28,7 @@ using System.Runtime.Serialization;
 namespace System.Threading.Tasks
 {
 	[Serializable]
-	public class TaskCanceledException : OperationCanceledException_
+    public class TaskCanceledException : System.Couchbase.OperationCanceledException
 	{
 		readonly Task task;
 		

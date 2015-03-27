@@ -440,7 +440,7 @@ namespace System.Threading.Tasks
 				
 				try {
 				    InnerInvoke ();
-				} catch (OperationCanceledException_ oce) {
+                } catch (System.Couchbase.OperationCanceledException oce) {
 					if (token != CancellationToken.None && oce.CancellationToken == token)
 						CancelReal ();
 					else

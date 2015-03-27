@@ -185,7 +185,7 @@ namespace System.Threading
 				if (cancellationToken.CanBeCanceled) {
 					var result = WaitHandle.WaitAny (new[] { handle, cancellationToken.WaitHandle }, millisecondsTimeout, false);
 					if (result == 1)
-						throw new OperationCanceledException_ (cancellationToken);
+                        throw new System.Couchbase.OperationCanceledException (cancellationToken);
 					if (result == WaitHandle.WaitTimeout)
 						return false;
 				} else {
