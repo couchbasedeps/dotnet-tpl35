@@ -51,6 +51,20 @@ namespace System.Collections.Generic
 
             return GetHashCode ((T)obj);
         }
+
+        public bool Equals(object x, object y)
+        {
+
+            if (x == null || y == null) {
+                return false;
+            }
+
+            if (!(x is T) || !(y is T))  {
+                return false;
+            }
+
+            return Equals((T)x, (T)y);
+        }
     }
 }
 
