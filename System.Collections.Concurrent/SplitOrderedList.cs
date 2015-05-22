@@ -28,7 +28,7 @@ using System.Collections.Generic;
 
 namespace System.Collections.Concurrent
 {
-	internal class SplitOrderedList<TKey, T>
+	public class SplitOrderedList<TKey, T>
 	{
 		class Node
 		{
