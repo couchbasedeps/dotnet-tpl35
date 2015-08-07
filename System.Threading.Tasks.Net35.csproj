@@ -102,6 +102,13 @@
     <Compile Include="System.Collections.Generic\DefaultEqualityComparer.cs" />
     <Compile Include="System\Lazy.cs" />
     <Compile Include="System\LazyThreadSafetyMode.cs" />
+    <Compile Include="StreamExtensions.cs" />
+    <Compile Include="System.Runtime.CompilerServices\AsyncTaskMethodBuilder.cs" />
+    <Compile Include="System.Runtime.CompilerServices\IAsyncStateMachine.cs" />
+    <Compile Include="System.Runtime.CompilerServices\AsyncTaskMethodBuilder_T.cs" />
+    <Compile Include="System.Runtime.CompilerServices\AsyncVoidMethodBuilder.cs" />
+    <Compile Include="System.Runtime.CompilerServices\AsyncStateMachineAttribute.cs" />
+    <Compile Include="System.Runtime.CompilerServices\StateMachineAttribute.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
