@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -30,11 +30,13 @@
     <ConsolePause>False</ConsolePause>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <DefineConstants>NET_4_5;</DefineConstants>
-    <DebugType>none</DebugType>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="System.Collections.Concurrent\BlockingCollection.cs" />
+    <Compile Include="System.Collections.Concurrent\ConcurrentBag.cs" />
     <Compile Include="System.Collections.Concurrent\ConcurrentDictionary.cs" />
     <Compile Include="System.Collections.Concurrent\ConcurrentOrderedList.cs" />
     <Compile Include="System.Collections.Concurrent\ConcurrentQueue.cs" />
@@ -101,17 +103,7 @@
     <Compile Include="System\Lazy.cs" />
     <Compile Include="System\LazyThreadSafetyMode.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="System.Collections.Concurrent\" />
-    <Folder Include="System.Collections.Generic\" />
-    <Folder Include="System.Threading.Tasks\" />
-    <Folder Include="System\" />
-    <Folder Include="System.Collections\" />
-    <Folder Include="System.Threading\" />
-    <Folder Include="System.Runtime.CompilerServices\" />
-    <Folder Include="System.Runtime.ExceptionServices\" />
-    <Folder Include="System.Collections.Concurrent.Partitioners\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Reference Include="System" />
