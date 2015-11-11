@@ -189,7 +189,23 @@ namespace System.IO
             #endif
         }
 
+
+
         #if !NET45PLUS
+        #if UNITY
+        private static Task CopyToAsync(Stream stream, Stream destination, byte[] buffer, CancellationToken cancellationToken)
+        {
+            int bytesRead;
+            while ((bytesRead = ReadAsync(stream, buffer, 0, buffer.Length, cancellationToken).Await()) != 0)
+            {
+                destination.WriteAsync(buffer, 0, bytesRead, cancellationToken).Await();
+            }
+
+            return Task.FromResult(true);
+        }
+
+        #else
+
         private static async Task CopyToAsync(Stream stream, Stream destination, byte[] buffer, CancellationToken cancellationToken)
         {
             int bytesRead;
@@ -198,6 +214,8 @@ namespace System.IO
                 await destination.WriteAsync(buffer, 0, bytesRead, cancellationToken).ConfigureAwait(false);
             }
         }
+
+        #endif
         #endif
 
         /// <summary>

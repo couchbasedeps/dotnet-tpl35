@@ -16,7 +16,7 @@
     <DebugType>full</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;TRACE;NET_4_5;</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;NET_4_5;UNITY</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
@@ -29,7 +29,7 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>False</ConsolePause>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <DefineConstants>NET_4_5;</DefineConstants>
+    <DefineConstants>NET_4_5;UNITY</DefineConstants>
     <DebugType>pdbonly</DebugType>
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
@@ -109,6 +109,7 @@
     <Compile Include="System.Runtime.CompilerServices\AsyncVoidMethodBuilder.cs" />
     <Compile Include="System.Runtime.CompilerServices\AsyncStateMachineAttribute.cs" />
     <Compile Include="System.Runtime.CompilerServices\StateMachineAttribute.cs" />
+    <Compile Include="UnityExt.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
