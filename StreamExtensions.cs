@@ -21,12 +21,22 @@
 using System;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Net;
 
 namespace System.IO
 {
     public static class StreamExtensions
     {
-        
+        public static Task<Stream> GetRequestStreamAsync(this WebRequest request)
+        {
+            return Task<Stream>.Factory.FromAsync(request.BeginGetRequestStream, request.EndGetRequestStream, null);
+        }
+
+        public static Task<WebResponse> GetResponseAsync(this WebRequest request)
+        {
+            return Task<WebResponse>.Factory.FromAsync(request.BeginGetResponse, request.EndGetResponse, null);
+        }
+
         public static void CopyTo (this Stream source, Stream destination)
         {
             CopyTo (source, destination, 16*1024);
