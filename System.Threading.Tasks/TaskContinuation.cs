@@ -126,7 +126,7 @@ namespace System.Threading.Tasks
 			if ((SynchronizationContext.Current == null || SynchronizationContext.Current.GetType () == typeof (SynchronizationContext)) && TaskScheduler.IsDefault) {
 				action ();
 			} else {
-				ThreadPool.UnsafeQueueUserWorkItem (l => ((Action) l) (), action);
+                ThreadPool.QueueUserWorkItem (l => ((Action) l) (), action);
 			}
 		}
 	}
