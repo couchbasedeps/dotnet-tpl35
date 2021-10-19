@@ -30,7 +30,24 @@
 
 namespace System.Threading.Tasks 
 {
-	public static class TaskExtensions
+#if NET20
+    public static class TaskExtensions {
+        public static Task<TResult> Unwrap<TResult>(Task<Task<TResult>> task) {
+            if(task == null)
+                throw new ArgumentNullException("task");
+
+            return TaskExtensionsImpl.Unwrap(task);
+        }
+
+        public static Task Unwrap(Task<Task> task) {
+            if(task == null)
+                throw new ArgumentNullException("task");
+
+            return TaskExtensionsImpl.Unwrap(task);
+        }
+    }
+#else
+    public static class TaskExtensions
 	{
 		public static Task<TResult> Unwrap<TResult> (this Task<Task<TResult>> task)
 		{
@@ -48,4 +65,5 @@ namespace System.Threading.Tasks
 			return TaskExtensionsImpl.Unwrap (task);
 		}
 	}
+#endif
 }
